@@ -1,0 +1,487 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>我的数据监控平台</title>
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/static/js/echarts.min.js"></script>
+	<script type="text/javascript" src="/static/js/china.js"></script>
+	<script type="text/javascript" src="/static/js/map.js"></script>
+	<script type="text/javascript" src="/static/js/js.js"></script>
+	<script type="text/javascript" src="/static/js/Bubble.js"></script>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<div class="head clearfix">
+
+
+	<h1 class="pulll_left">我的数据监控平台</h1>
+		<div class="menu menu2 pulll_left">
+		<ul>      
+			<li><a href="https://blog.csdn.net/Phillip_xian?type=blog">CSDN统计</a></li>
+			<li><a href="https://www.zhcw.com/kjxx/ssq/">福彩信息</a></li>
+			<li><a href="https://weather.cma.cn/">天气预报</a></li>
+			<li><a href="https://s.weibo.com/top/summary">热搜排行</a></li>
+			<li><a href="https://www.sse.com.cn/market/overview/">股指信息</a></li>
+			<li><a href="https://replicate.com/about">AI绘图</a></li>
+			<li><a >数据库监控</a></li>
+			
+		</ul>
+		</div>
+		
+		<div class="time" id="showTime">2018/6/12 17:00:12</div>
+		<script>
+			var t = null;
+			t = setTimeout(time,1000);//開始运行
+			function time()
+			{
+			clearTimeout(t);//清除定时器
+			dt = new Date();
+				var y=dt.getFullYear();
+				var mt=dt.getMonth()+1;
+				var day=dt.getDate();
+			var h=dt.getHours();//获取时
+			var m=dt.getMinutes();//获取分
+			var s=dt.getSeconds();//获取秒
+			document.getElementById("showTime").innerHTML = y+"/"+mt+"/"+day+" "+h+":"+m+":"+s+"";
+			t = setTimeout(time,1000); //设定定时器，循环运行     
+			} 
+		</script>
+		</div>
+	<div class="mainbox">
+	
+	<ul class="clearfix nav1">
+		<li style="width: 22%">
+		<div class="box">
+			<div class="tit"><a href="https://blog.csdn.net/Phillip_xian?type=blog" target="_blank">CSDN统计看板</a></div>
+			<div class="boxnav" style="height: 212px;">
+			<div class="" style="height:100%;display: flex; align-items: center;">
+				<div style="float: left; width: 50%; height: 100%" class="wancheng">
+					<div><span>总访问量</span>
+					<h3>46023<i>人</i></h3></div>
+					<div class="yuan">
+					<span class="per_csdn">48%</span>
+					</div>
+					</div>
+				<div style="float: left; width: 50%; height: 80%" id="myd1"></div>
+			</div>
+			</div>1
+			</div>
+			<div class="box">
+			<div class="tit">CSDN收藏与粉丝量</div>
+			<div class="boxnav" style="height: 240px;">
+			<div class="ftechart" id="echart4"></div>
+			</div>
+			</div>
+		</li>
+		<li style="width: 56%">
+		
+		<div class="box">
+			<div class="boxnav mapc" style="height: 550px; position: relative">
+				<div class="mapnav">
+				<ul>
+                    {% for red_one in red_one %}
+                        <li><div><span>红球</span><p>{{red_one}}</p></div></li>
+                    {% endfor %}
+                    {% for data_blue in data_blue %}
+                        {% if forloop.first %}
+                        <li><div><span1>蓝球</span1><p>{{data_blue.ssq_blue}}</p></div></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+				</div>
+				<div class="mapnav2">
+				
+				<div class="box">
+			<div class="tit">奖池信息</div>
+			<div class="boxnav" style="height: 130px;" id="sysx">
+				</div>
+					<div class="leidanav leidanav3" style="margin-bottom: 15px;">
+<!--				<ul class="clearfix">-->
+<!--					<li><span>业务笔数</span><p>128</p></li>-->
+<!--					<li><span>业务收益</span><p>100</p></li>-->
+<!--					<li><span>业务笔数</span><p>28</p></li>-->
+<!--					<li><span>业务收益</span><p>28</p></li>-->
+<!--					</ul>-->
+				</div>
+					
+					</div>
+				</div>
+			<div class="map" id="map"></div>
+				
+				<script>
+				$(".mapbtn a").hover(function(){
+					var ind=$(this).index()
+					$(".mapnav ul").eq(ind).show().siblings().hide()
+				})
+				</script>
+			</div>
+			</div>
+		
+		</li>
+		<li style="width: 22%">
+		
+		<div class="box">
+			<div class="tit"><a href="https://weather.cma.cn/" target="_blank">天气预报</a>></div>
+			<div class="boxnav" style="height: 200px; overflow: auto; padding: 0 10px;">
+				<table class="table1" width="100%" border="0" cellspacing="0" cellpadding="0" >
+					<thead style="background: #034481;position: relative;z-index: 2;">
+						<tr>
+						  <th>城市名称</th>
+						  <th>天气状况</th>
+						  <th>温度</th>
+						  <th>风力</th>
+						</tr>
+					</thead>
+					<tbody style="position: relative;"></tbody>
+			</table>
+			</div>
+			</div>
+			<div class="box">
+			<div class="tit"><a href="https://s.weibo.com/top/summary" target="_blank">热搜排行榜</a></div>
+			<div class="boxnav" style="height: 250px;">
+				<div class="myli" style="height: 200px; float: left; width: 50%; padding: 0 5px;overflow-y:auto;">
+				<div class="tit02 text-b">热门话题榜</div>
+					<div class="huati">
+						<ul ></ul>
+					</div>
+				</div>
+			
+			<div style="height: 200px; float: left; width: 50%">
+				
+				<div class="text-b tit02" style="text-align: center;">热搜-词云</div>
+					<div class="tagcloud">
+					  <!-- bo大小 co颜色 -->
+					  <a class="b01 co01" >大数据</a>
+					  <a class="b02 co02" >大数据</a>
+					  <a class="b03 co05" >大数据</a>
+					  <a class="b04 co02" >大数据</a>
+					  <a class="b03 co05" >大数据</a>
+					</div>
+					<script type="text/javascript">
+						/*3D标签云*/
+						tagcloud({
+							selector: ".tagcloud",  //元素选择器
+							fontsize: 6,       //基本字体大小, 单位px
+							radius: 40,         //滚动半径, 单位px 页面宽度和高度的五分之一
+							mspeed: "slow",   //滚动最大速度, 取值: slow, normal(默认), fast
+							ispeed: "slow",   //滚动初速度, 取值: slow, normal(默认), fast
+							direction: 0,     //初始滚动方向, 取值角度(顺时针360): 0对应top, 90对应left, 135对应right-bottom(默认)...
+							keep: false          //鼠标移出组件后是否继续随鼠标滚动, 取值: false, true(默认) 对应 减速至初速度滚动, 随鼠标滚动
+						});
+					</script>
+				</div>
+			</div>
+			</div>
+		
+		</li>
+		</ul>
+		
+		<div class="box" style="padding: 20px 0;">
+			<ul class="clearfix nav2 ">
+				<li style="width:27%"><div class="tit01"><a href="https://www.sge.com.cn/" target="_blank">股指信息(实时)</a>></div>
+				<div class="boxnav" style="height: 250px;">
+					<ul class="ylfw">
+					<li><div class="ylfwbox fora">
+						<p>上证指数</p>
+						<ol><span class="sz_index">4015.89</span><em>点</em><i class="text-d" id="sz_index_fu">↑4.01%</i></ol>
+						<div class="forb"></div>
+						</div></li>
+					<li><div class="ylfwbox fora">
+						<p>贵州茅台(600519)</p>
+						<ol><span class="nsda_index">17726.98</span><em>点</em><i class="text-s" id="nsda_index_fu">↓4.01%</i></ol>
+						<div class="forb"></div></div></li>
+
+					<li><div class="ylfwbox fora">
+						<p>黄金价格</p>
+						<ol><span class="gold">546.20</span><em>元</em><i class="text-s" id="gold_fu">↓4.01%</i></ol>
+						<div class="forb"></div>
+						</div></li>
+					<li><div class="ylfwbox fora">
+						<p>恒生指数</p>
+						<ol><span  class="hs_index">17936.12</span><em>点</em><i class="text-s" id="hs_index_fu">↓4.01%</i></ol>
+						<div class="forb"></div></div></li>
+
+					<li><div class="ylfwbox fora">
+						<p>沪深300</p>
+						<ol><span class="hs_300">4536.20</span><em>点</em><i class="text-s" id="hs_300_fu">↓4.01%</i></ol>
+						<div class="forb"></div></div></li>
+					<li><div class="ylfwbox fora">
+						<p>创业板指</p>
+						<ol><span class="cyb_index">1806.19</span><em>点</em><i class="text-s" id="cyb_index_fu">↓4.01%</i></ol>
+						<div class="forb"></div></div></li>
+					</ul>
+				</div>
+			</li>
+			<li style="width:23%"><div class="tit01">上证指数与茅台股价历史记录</div>
+				<div class="boxnav" id="echart3" style="height: 200px;">
+				</div>
+				</li>
+			<li style="width:25%">
+				<div class="tit01" style="height: 18px;" ><a href="https://replicate.com/about" target="_blank">每日热词AI绘图</a></div>
+				<div class="boxnav" style="height: 200px;">
+					<center><img src="/static/images/cht001.jpg" width="450" height="220"></center>
+				</div>
+
+				</li>
+			<li style="width:25%"><div class="tit01">数据库容量监控</div>
+
+				<div class="" id="">
+				<div style="float: left; width: 48%; height: 200px" id="fb03"></div>
+				<div style="float: left; width: 52%; height: 200px"  id="fb04"></div>
+
+				</div>
+
+				</li>
+			</ul>
+		</div>
+		
+		
+	</div>
+</body>
+
+<script type="text/javascript">
+    // CSDN统计
+	//需要执行的内容:获取csdn_reader
+	var csdn_reader_num; // 全局变量
+	var divTop = 0;
+
+	get_csdn_reader = function(){
+		$.ajax({
+			type: "get",
+			url: "http://127.0.0.1:8000/appcsdn/csdn_url",
+			async:false,  //值为true表示异步，只为false表示同步
+			success: function (csdn_list) {
+				csdn_reader_num = csdn_list['csdn_reader']; //将局部变量赋值给全局变量
+			    }
+            })
+        }
+        get_csdn_reader();
+		$("h3").html(csdn_reader_num);
+		per_csdn ='↑'+ Math.round((csdn_reader_num/31000-1)*100,2) +'%';
+		$(".per_csdn").html(per_csdn);
+
+    //每60000秒=1mins 每1分钟调用一次ajax
+	setInterval(function(){
+		get_csdn_reader();
+		$("h3").html(csdn_reader_num);
+		per_csdn ='↑'+ Math.round((csdn_reader_num/31000-1)*100,2) + '%';
+		$(".per_csdn").html(per_csdn);
+	},5000);
+
+	// 天气预报
+	// 天气预报 tr内容表格填充
+	get_weather = function(){
+			$.ajax({
+				type: "get",
+				url: "http://127.0.0.1:8000/appweather/date_weather",
+				async:false,  //值为true表示异步，只为false表示同步
+				success: function (weather_list) {
+					var td_str = ''
+					for (var one in weather_list){
+						var province =  weather_list[one]['province'];
+						var city_name = weather_list[one]['city_name'];
+						var today_dayText = weather_list[one]['today_dayText'];
+						var today_heat = weather_list[one]['today_heat'];
+						var today_wind = weather_list[one]['today_wind'];
+						td_str += "<tr> <td>"+province+" "+city_name+"</td> <td><span class='text-w'>"+today_dayText+"</span></td> <td><span class='text-b'>"+today_heat+"</span></td> <td><div class='text-d'>"+today_wind+"</div></td></tr>";
+					}
+					// 完全拼接后，再添加标签内
+					$("tbody").append(td_str);
+					initScroll(weather_list)
+				}
+			})
+	}
+	get_weather();
+
+	// 天气预报tbale1-无缝丝滑滚动
+
+	function initScroll(list) {
+		let tbody = $('.table1 tbody')
+		let len = list.length
+		tbody.css('top', '0')
+		let speed = 50
+		let trH = tbody.find('tr').outerHeight()
+		let marquee = function () {
+			if (divTop <= -trH * len) {
+				divTop = 0
+			} else {
+				divTop -= 1
+			}
+			tbody.css('top', divTop + 'px')
+		}
+		if (window.deptCatalogTopTimer) {
+			clearInterval(window.deptCatalogTopTimer)
+		}
+		window.deptCatalogTopTimer = setInterval(marquee, speed)
+		$(".table1").hover(function(){
+			if (window.deptCatalogTopTimer) {
+				clearInterval(window.deptCatalogTopTimer)
+			}
+		}, function(){
+			window.deptCatalogTopTimer = setInterval(marquee, speed)
+		})
+	}
+
+	// 微博热搜
+	get_weibo = function(){
+			$.ajax({
+				type: "get",
+				url: "http://127.0.0.1:8000/appweibo/weibo_url",
+				async:false,  //值为true表示异步，只为false表示同步
+				success: function (weibo_data) {
+					var td_str = ''
+					var one_num = 1;
+					for (var one in weibo_data){
+						var weibo_word = weibo_data[one]['weibo_word'];
+						if((one_num % 3)==1){
+							var row_color = 'text-dd';
+							td_str += '<li class="'+row_color+'">'+weibo_word+'</li>';
+						}else if((one_num % 3)==3){
+							var row_color = 'text-s';
+							td_str += '<li class="'+row_color+'">'+weibo_word+'</li>';
+						}else{
+							var row_color = 'text-ss';
+							td_str += '<li class="'+row_color+'">'+weibo_word+'</li>';
+						}
+						one_num += 1;
+					}
+					$(".huati ul").append(td_str);
+				}
+			})
+	}
+    get_weibo();
+	//每30000秒= 每半分钟调用一次ajax
+	setInterval(function(){
+		get_weibo();
+	},30000);
+
+	
+	// 股指信息
+	// 股指信息-01上证指数 值
+	get_sz_index = function(){
+		sz_index =  {{sz_index}};
+		$(".sz_index").html(sz_index);
+	}
+	// 股指信息-01上证指数 涨跌幅
+	get_sz_index_fu = function(){
+		sz_index_fu =  {{sz_index_fu}};
+		if(sz_index_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#sz_index_fu").attr("class","text-d");
+			$("#sz_index_fu").html('↑'+sz_index_fu+'%');
+		}else{
+			$("#sz_index_fu").attr("class","text-s");
+			$("#sz_index_fu").html('↓'+sz_index_fu+'%');
+		}
+	}
+
+	// 股指信息-02纳斯达克指数（目前是茅台）
+	get_nsda_index = function(){
+			nsda_index =  {{stock_mt}};
+			$(".nsda_index").html(nsda_index);
+	}
+	// 股指信息-02纳斯达克指数 涨跌幅
+	get_nsda_index_fu = function(){
+		nsda_index_fu =  {{stock_mt_fu}};
+		if(nsda_index_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#nsda_index_fu").attr("class","text-d");
+			$("#nsda_index_fu").html('↑'+nsda_index_fu+'%');
+		}else{
+			$("#nsda_index_fu").attr("class","text-s");
+			$("#nsda_index_fu").html('↓'+nsda_index_fu+'%');
+		}
+	}
+
+	// 股指信息-03黄金价格 值
+    get_gold = function(){
+			gold =  {{gold}};
+			$(".gold").html(gold);
+	}
+	// 股指信息-03黄金价格 涨跌幅
+	get_gold_fu = function(){
+		gold_fu =  {{gold_fu}};
+		if(gold_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#gold_fu").attr("class","text-d");
+			$("#gold_fu").html('↑'+gold_fu+'%');
+		}else{
+			$("#gold_fu").attr("class","text-s");
+			$("#gold_fu").html('↓'+gold_fu+'%');
+		}
+	}
+
+	// 股指信息-04恒生指数 值
+	get_hs_index = function(){
+			hs_index =  {{hs_index}};
+			$(".hs_index").html(hs_index);
+	}
+	// 股指信息-04恒生指数 涨跌幅
+	get_hs_index_fu = function(){
+		hs_index_fu =  {{hs_index_fu}};
+		if(hs_index_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#hs_index_fu").attr("class","text-d");
+			$("#hs_index_fu").html('↑'+hs_index_fu+'%');
+		}else{
+			$("#hs_index_fu").attr("class","text-s");
+			$("#hs_index_fu").html('↓'+hs_index_fu+'%');
+		}
+	}
+
+	// 股指信息-05沪深300指数 值
+	get_hs_300 = function(){
+			hs_300 =  {{hs_300}};
+			$(".hs_300").html(hs_300);
+	}
+	// 股指信息-05沪深300指数 涨跌幅
+	get_hs_300_fu = function(){
+		hs_300_fu =  {{hs_300_fu}};
+		if(hs_300_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#hs_300_fu").attr("class","text-d");
+			$("#hs_300_fu").html('↑'+hs_300_fu+'%');
+		}else{
+			$("#hs_300_fu").attr("class","text-s");
+			$("#hs_300_fu").html('↓'+hs_300_fu+'%');
+		}
+	}
+
+	// 股指信息-06创业板指数 值
+	get_cyb_index = function(){
+			cyb_index =  {{cyb_index}};
+			$(".cyb_index").html(cyb_index);
+	}
+	// 股指信息-06创业板指数 涨跌幅
+	get_cyb_index_fu = function(){
+		cyb_index_fu =  {{cyb_index_fu}};
+		if(cyb_index_fu>0){  				// text-d 为红色 ↑  text-s 为绿色 ↓
+			$("#cyb_index_fu").attr("class","text-d");
+			$("#cyb_index_fu").html('↑'+cyb_index_fu+'%');
+		}else{
+			$("#cyb_index_fu").attr("class","text-s");
+			$("#cyb_index_fu").html('↓'+cyb_index_fu+'%');
+		}
+	}
+
+	//每3000 每3秒调用一次ajax
+	function index_func(){
+	// 前3个金融指数：上证、纳斯达克、黄金
+		get_sz_index();
+		get_sz_index_fu();
+		get_nsda_index();
+		get_nsda_index_fu();
+		get_gold();
+		get_gold_fu();
+    // 后3个金融指数：恒生、沪深300、创业板指
+		get_hs_index();
+		get_hs_index_fu();
+		get_hs_300();
+		get_hs_300_fu();
+		get_cyb_index();
+		get_cyb_index_fu();
+	}
+    index_func();
+	setInterval(function(){
+		index_func();
+	},3000);
+
+
+</script>
+</html>
